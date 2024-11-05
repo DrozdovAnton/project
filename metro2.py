@@ -45,13 +45,31 @@ class Task:
     def get_all_info(self):
         print(self.idt, self.ide, self.ss, self.es, self.st, self.et)
 
-# def set_ide():
+def calc_time(t1, t2):
+    return timedelta(t1 + t2)
 
+def get_time_path(ss, es):
+    for p in paths:
+        if ss + es == p[0] + p[1] or es + ss == p[0] + p[1]:
+            return time(p[2], p[3])
+        elif ss == es:
+            return time(0, 0)
+
+def set_ide():
+    tp1 = tp2 = time(0, 0)
+    for i in range(len(plan)):
+        if plan[i].ide == None:
+            tp1 = [timedelta(hours=get_time_path(plan[i-2].es, plan[i].ss).hour, minutes=get_time_path(plan[i-2].es, plan[i].ss).minute) + plan[i-2].et, plan[i-2].ide]
+            tp2 = [timedelta(hours=get_time_path(plan[i-1].es, plan[i].ss).hour, minutes=get_time_path(plan[i-1].es, plan[i].ss).minute) + plan[i-1].et, plan[i-1].ide]
+            
+            if tp1[0] < tp2[0] and tp1[0] < timedelta(hours=plan[i].st.hour, minutes=plan[1].st.minute):
+                plan[i].ide = tp1[1]
+            elif tp2[0] < tp1[0] and tp2[0] < timedelta(hours=plan[i].st.hour, minutes=plan[i].st.minute):
+                plan[i].ide = tp2[1]
 
 for i in tasks:
     plan.append(Task(i[0], i[1], time(i[2], i[3])))
 
-# idt - ide
-
 for i in plan:
+    set_ide()
     i.get_all_info()
