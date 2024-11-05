@@ -15,41 +15,43 @@ tasks = [["Ботанический сад","Рижская",13,40],["Алекс
 # es - end station
 # sth - start time hour
 # stm - start time min
+tasks = sorted(tasks, key=itemgetter(2, 3))
+
+plan = [] # list of Task
+
+num_employees = 2
 
 class Task:
     idt = 1
     def __init__(self, ss, es, st):
         self.idt = Task.idt
-        self.ide = self.set_id_empl()
+        self.ide = self.set_ide_default()
         self.ss = ss
         self.es = es
         self.st = st
-        self.et = self.set_end_time()
+        self.et = self.set_et()
 
         Task.idt += 1
 
-    def set_end_time(self):
+    def set_et(self):
         for i in paths:
             if self.ss + self.es == i[0] + i[1] or self.es + self.ss == i[0] + i[1]:
                 return timedelta(hours=i[2], minutes=i[3]) + timedelta(hours=self.st.hour, minutes=self.st.minute)
     
-    def set_id_empl(self):
+    def set_ide_default(self):
         if self.idt <= num_employees:
             return self.idt
-        else:
-            if self.idt == 3:
-                pass
-                # algorimt for choice employee, pass delete
-    
+                
     def get_all_info(self):
         print(self.idt, self.ide, self.ss, self.es, self.st, self.et)
 
-plan = [] # list of Task
-tasks = sorted(tasks, key=itemgetter(2, 3))
-num_employees = 2
+# def set_ide():
+
 
 for i in tasks:
     plan.append(Task(i[0], i[1], time(i[2], i[3])))
+
+# idt - ide
 
 for i in plan:
     i.get_all_info()
