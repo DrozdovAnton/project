@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание заявки</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Создание новой заявки</h1>
+    <form action="/submit" method="POST">
+        <label for="start_station">Станция отправления:</label>
+        <input type="text" id="start_station" name="start_station" required><br><br>
+
+        <label for="end_station">Станция назначения:</label>
+        <input type="text" id="end_station" name="end_station" required><br><br>
+
+        <label for="start_time">Время отправления:</label>
+        <input type="time" id="start_time" name="start_time" required><br><br>
+
+        <input type="submit" value="Создать заявку">
+    </form>
+</body>
+</html>
