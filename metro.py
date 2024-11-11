@@ -1,3 +1,4 @@
+from datetime import time, timedelta
 from operator import itemgetter
 
 
@@ -8,55 +9,70 @@ paths=[["Медведково","Бабушкинская",0,4],["Медведк�
 # pth - path time hour
 # ptm - path time min
 
-tasks = [["Ботанический сад","Рижская",13,40],["Алексеевская","Рижская",10,30],["Проспект мира","Свиблово",10,50],["Ботанический сад","ВДНХ",17,30],["Свиблово","Проспект мира",12,00],["Алексеевская","Медведково",14,50],["Алексеевская","Бабушкинская",12,15],["Алексеевская","ВДНХ",16,50],["ВДНХ","Проспект мира",17,20],["Свиблово","Алексеевская",18,00]]
+tasks = []
 # task: [ss, es, sth, stm]
 # ss - start station
 # es - end station
 # sth - start time hour
 # stm - start time min
 
-plan = []
-# plan: [idt, ide, ss, es, sth, stm, eth, etm]
-# idt - identifier task
-# ide - identifier employee
-# ss - start station
-# es - end station
-# sth - start time hour
-# stm - start time min
-# eth - end time hour
-# etm - end time min
-
-def calc_between_t(ss, es, sth, stm):
-    eth = etm = 0
-    for i in paths:
-        if ss + es == i[0] + i[1] or es + ss == i[0] + i[1]:
-            eth = (sth + i[2]) % 24 + (stm + i[3]) // 60
-            etm = (stm + i[3]) % 60
-    return eth, etm
-
-def determination_task(num_empl, plan):
-    empl_and_path = []
-    # empl_and_path: [ide, pth, ptm]
-    # ide - identifier employee
-    # pth - path time hour
-    # ptm - path time min
-
-    for i in range(len(plan)):
-        # plan: [idt, ide, ss, es, sth, stm, eth, etm]
-        if plan[i][0] == None:
-            print(calc_between_t(plan[i-1][3],plan[i][2],plan[i-1][6],plan[i-1][7]))
-            print(calc_between_t(plan[i-2][3],plan[i][2],plan[i-2][6],plan[i-2][7]))
-    
-tasks = sorted(tasks, key=itemgetter(2, 3))
+plan = [] # list of Task
 num_employees = 2
 
-for i in range(len(tasks)):
-    # plan: [idt, ide, ss, es, sth, stm, eth, etm]
-    plan.append(None)
-    if len(tasks) >= num_employees and i < num_employees:
-        plan[i] = i+1, i+1 ,tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3], calc_between_t(tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3])[0], calc_between_t(tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3])[1]
-    else:
-        plan[i] = i+1, None ,tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3], calc_between_t(tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3])[0], calc_between_t(tasks[i][0], tasks[i][1], tasks[i][2], tasks[i][3])[1]
+class Task:
+    idt = 1
+    def __init__(self, ss, es, st):
+        # idt - id task
+        # ide - id employee
+        # ss - start station
+        # es - end station
+        # st - start time
+        # et - end time
 
-for i in plan:
-    print(i)
+        self.idt = Task.idt 
+        self.ide = None
+        self.ss = ss
+        self.es = es
+        self.st = st
+        self.et = self.set_et()
+
+        Task.idt += 1
+
+    def set_et(self):
+        for i in paths:
+            if self.ss + self.es == i[0] + i[1] or self.es + self.ss == i[0] + i[1]:
+                return timedelta(hours=i[2], minutes=i[3]) + timedelta(hours=self.st.hour, minutes=self.st.minute)
+                
+    def get_all_info(self):
+        print(self.idt, self.ide, self.ss, self.es, self.st, self.et, '\n')
+
+def get_time_path(ss, es):
+    for p in paths:
+        if ss + es == p[0] + p[1] or es + ss == p[0] + p[1]:
+            return time(p[2], p[3])
+        elif ss == es:
+            return time(0, 0)
+
+def set_ide():
+    for task in plan:
+        task.ide = None
+    
+    for i in range(len(plan)):
+        if i < num_employees:
+            plan[i].ide = i+1
+
+    for i in range(len(plan)):
+        if plan[i].ide == None:
+            path_time_and_id_e = []
+        
+            for j in range(num_employees):
+                path_time_and_id_e.append([timedelta(hours=get_time_path(plan[i-(j+1)].es, plan[i].ss).hour, minutes=get_time_path(plan[i-(j+1)].es, plan[i].ss).minute) + plan[i-(j+1)].et, plan[i-(j+1)].ide])
+            path_time_and_id_e = sorted(path_time_and_id_e, key=itemgetter(0))
+            
+            if path_time_and_id_e[0][0] < timedelta(hours=plan[i].st.hour, minutes=plan[1].st.minute):
+                plan[i].ide = path_time_and_id_e[0][1]
+
+def add_task(ss, es, h, m):
+    plan.append(Task(ss, es, time(h, m)))
+    plan.sort(key=lambda plan: plan.st)
+    set_ide()

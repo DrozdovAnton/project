@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка</title>
+    <link rel="stylesheet" href="static/style_forma.css">
+</head>
+<body>
+    <h1>Заявка на сопровождение</h1>
+    <form action="/submit" method="POST">
+        <label for="time">Время отправления</label>
+        <input type="text" id="time" name="hour" placeholder="Часы" required>
+        <input type="text" id="time" name="min" placeholder="Минуты" required><br><br>
+        
+        <label for="ss">Станция отправления</label>
+        <input type="text" id="ss" name="ss" required><br><br>
+
+        <label for="es">Станция назначения</label>
+        <input type="text" id="es" name="es" required><br><br>
+
+        <button type="submit">Оставить заявку</button>
+    </form>
+</body>
+</html>

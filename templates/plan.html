@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>План</title>
+    <link rel="stylesheet" href="static/style_plan.css">
+</head>
+<body>
+    <h1>Список заявок</h1>
+    <table border=1>
+        <thead>
+            <tr>
+                <th>ID заявки</th>
+                <th>ID сотрудника</th>
+                <th>Станция отправления</th>
+                <th>Станция назначения</th>
+                <th>Время отправления</th>
+                <th>Время прибытия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in plan %}
+                <tr>
+                    <td>{{ i.idt }}</td>
+                    <td>{{ i.ide }}</td>
+                    <td>{{ i.ss }}</td>
+                    <td>{{ i.es }}</td>
+                    <td>{{ i.st }}</td>
+                    <td>{{ i.et }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
