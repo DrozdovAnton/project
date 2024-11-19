@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Итоговое расписание задач{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-4">Итоговое расписание задач</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID Заявки</th>
+                <th>Начальная станция</th>
+                <th>Конечная станция</th>
+                <th>Время начала</th>
+                <th>Время окончания</th>
+                <th>ID Сотрудника</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td><a href="{{ url_for('view_task', task_id=task.id) }}">{{ task.id }}</a></td>
+                <td>{{ task.start_station }}</td>
+                <td>{{ task.end_station }}</td>
+                <td>{{ task.start_time }}</td>
+                <td>{{ task.end_time }}</td>
+                <td>{{ task.employee_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center">
+        <a href="{{ url_for('index') }}"
+           class="btn btn-primary mt-3">Вернуться на главную</a>
+    </div>
+<div class="text-center mt-4">
+    <button class="btn btn-secondary" onclick="history.back()">Назад</button>
+</div>
+{% endblock %}
