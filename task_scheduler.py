@@ -1,6 +1,6 @@
 from task_utils import (load_json_data, build_station_dict, build_graph,
                         remove_unconnected_nodes, build_labels_dict, find_station_id,
-                        Task, assign_initial_tasks, assign_remaining_tasks)
+                        Task, assign_initial_tasks, assign_remaining_tasks,)
 
 from datetime import timedelta, time
 from operator import itemgetter
@@ -50,6 +50,10 @@ def main():
     for task in task_objects:
         print(f"Заявка {task.id}: Сотрудник {task.employee_id}, {task.start_station} -> {task.end_station}, "
               f"Начало: {task.start_time}, Окончание: {task.end_time}")
+
+    print('\n')
+    for employee in employees:
+        print(f"Сотрудник {employee['id']} выполнил {employee['task_count']} задач.")
 
 
 # Запуск основной функции

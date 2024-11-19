@@ -1,6 +1,7 @@
 import json
 import networkx as nx
 import codecs
+import matplotlib.pyplot as plt
 from datetime import timedelta
 
 
@@ -87,6 +88,8 @@ def assign_initial_tasks(tasks, employees):
         task.employee_id = employees[i]['id']
         employees[i]['available_time'] = task.end_time
         employees[i]['last_station'] = task.end_station
+        employees[i].setdefault('task_count', 0)  # Инициализация счётчика задач
+        employees[i]['task_count'] += 1
 
 
 def find_best_employee_for_task(task, employees, G, labels):
@@ -114,4 +117,6 @@ def assign_remaining_tasks(tasks, employees, G, labels):
         if best_employee:
             task.employee_id = best_employee['id']
             best_employee['available_time'] = task.end_time
-
+            best_employee['last_station'] = task.end_station
+            best_employee.setdefault('task_count', 0)  # Инициализация счётчика задач
+            best_employee['task_count'] += 1

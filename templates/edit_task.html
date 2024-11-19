@@ -1,0 +1,42 @@
+
+{% extends "layout.html" %}
+
+{% block title %}Редактировать Заявку {{ task.id }}{% endblock %}
+
+{% block content %}
+<div class="mt-4">
+    <h1 class="text-center">Редактировать Заявку {{ task.id }}</h1>
+    <form method="post" action="{{ url_for('edit_task', task_id=task.id) }}" class="mt-5">
+        <div class="form-group">
+            <label for="start_station">Начальная станция</label>
+            <select class="form-control" id="start_station" name="start_station" required>
+                {% for station in stations %}
+                <option value="{{ station }}" {% if station == task.start_station %}selected{% endif %}>{{ station }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="end_station">Конечная станция</label>
+            <select class="form-control" id="end_station" name="end_station" required>
+                {% for station in stations %}
+                <option value="{{ station }}" {% if station == task.end_station %}selected{% endif %}>{{ station }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="start_hour">Час начала</label>
+                <input type="number" class="form-control" id="start_hour" name="start_hour" min="0" max="23" value="{{ task.start_time.split(':')[0] }}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="start_minute">Минута начала</label>
+                <input type="number" class="form-control" id="start_minute" name="start_minute" min="0" max="59" value="{{ task.start_time.split(':')[1] }}" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Сохранить изменения</button>
+    </form>
+    <div class="text-center mt-4">
+        <button class="btn btn-secondary" onclick="history.back()">Назад</button>
+    </div>
+</div>
+{% endblock %}
