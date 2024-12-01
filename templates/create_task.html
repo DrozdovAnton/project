@@ -1,42 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать заявку</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Создать заявку</h1>
+        <form method="post" class="form-style" id="task-form">
+            <label for="start_station">Начальная станция:</label>
+            <select id="start_station" name="start_station" required>
+                {% for station in stations %}
+                <option value="{{ station }}">{{ station }}</option>
+                {% endfor %}
+            </select>
 
-{% extends "layout.html" %}
+            <label for="end_station">Конечная станция:</label>
+            <select id="end_station" name="end_station" required>
+                {% for station in stations %}
+                <option value="{{ station }}">{{ station }}</option>
+                {% endfor %}
+            </select>
 
-{% block title %}Создать заявку{% endblock %}
+            <label for="start_hour">Час начала:</label>
+            <input type="number" id="start_hour" name="start_hour" required min="6" max="23">
 
-{% block content %}
-    <div class="mt-4">
-        <h1 class="text-center">Создать новую заявку</h1>
-        <form method="post" action="{{ url_for('create_task') }}" class="mt-5">
-            <div class="form-group">
-                <label for="start_station">Станция отправления</label>
-                <select class="form-control" id="start_station" name="start_station" required>
-                    {% for station in stations %}
-                    <option value="{{ station }}">{{ station }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="end_station">Станция назначения</label>
-                <select class="form-control" id="end_station" name="end_station" required>
-                    {% for station in stations %}
-                    <option value="{{ station }}">{{ station }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="start_hour">Час начала</label>
-                    <input type="number" class="form-control" id="start_hour" name="start_hour" min="0" max="23" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="start_minute">Минута начала</label>
-                    <input type="number" class="form-control" id="start_minute" name="start_minute" min="0" max="59" required>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Создать Заявку</button>
+            <label for="start_minute">Минута начала:</label>
+            <input type="number" id="start_minute" name="start_minute" required min="0" max="59">
+
+            <button type="submit">Создать задачу</button>
         </form>
+        <p><a href="{{ url_for('index') }}">На главную</a></p>
     </div>
-<div class="text-center mt-4">
-    <button class="btn btn-secondary" onclick="history.back()">Назад</button>
-</div>
-{% endblock %}
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script>
+        document.getElementById('task-form').addEventListener('submit', function(event) {
+            var startStation = document.getElementById('start_station').value;
+            var endStation = document.getElementById('end_station').value;
+
+            if (startStation === endStation) {
+                alert('Начальная и конечная станции не могут быть одинаковыми.');
+                event.preventDefault(); // Предотвращаем отправку формы
+            }
+        });
+    </script>
+</body>
+</html>

@@ -98,11 +98,11 @@ def find_best_employee_for_task(task, employees, G, labels):
     best_employee = None
 
     for employee in employees:
-        travel_time = timedelta(minutes=calc_time(G, find_station_id(labels, employee['last_station']),
+        travel_time = timedelta(hours=0, minutes=calc_time(G, find_station_id(labels, employee['last_station']),
                                                   find_station_id(labels, task.start_station)))
         arrival_time = employee['available_time'] + travel_time
 
-        if arrival_time <= task.start_time and travel_time < min_travel_time:
+        if arrival_time < task.start_time and travel_time < min_travel_time:
             min_travel_time = travel_time
             best_employee = employee
 

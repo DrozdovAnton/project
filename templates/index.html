@@ -1,15 +1,22 @@
-{% extends "layout.html" %}
-
-{% block title %}Главная{% endblock %}
-
-{% block content %}
-    <div class="text-center mt-5">
-        <h1>Панель Заявок</h1>
-        <p class="lead">Добро пожаловать в систему управления задачами. Выберите одно из действий ниже:</p>
-        <a href="{{ url_for('create_task') }}" class="btn btn-primary btn-lg ml-2" role="button">Создать заявку</a>
-        <a href="{{ url_for('view_schedule') }}" class="btn btn-secondary btn-lg ml-2" role="button">Просмотр расписания</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Управление заявками</h1>
+        <div class="links-container">
+            <p><a href="{{ url_for('create_task') }}">Создать заявку</a></p>
+            <p><a href="{{ url_for('load_data_test') }}">Загрузить тестовые заявки</a></p>
+            <p><a href="{{ url_for('assign_tasks') }}">Распределить заявки</a></p>
+            <p><a href="{{ url_for('view_schedule') }}">Просмотр расписания</a></p>
+            <!-- Кнопка для очистки расписания -->
+            <p><a href="{{ url_for('clear_schedule') }}">Очистить расписание</a></p>
+        </div>
     </div>
-<div class="text-center mt-4">
-    <button class="btn btn-secondary" onclick="history.back()">Назад</button>
-</div>
-{% endblock %}
+</body>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</html>
